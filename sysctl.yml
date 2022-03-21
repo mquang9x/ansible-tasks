@@ -1,0 +1,17 @@
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: set vm.swappiness to 10 if server has more than 256MB of RAM
+      sysctl:
+        name: vm.swappiness
+        value: 10
+        state: present
+      when:
+        - ansible_memory_mb.real.total >= 256 
+
+    - name: report not enough total memory
+      debug:
+        msg: "Server memory less than 1024MB ({{ ansible_memory_mb.real.total }}MB)"
+      when:
+        - ansible_memory_mb.real.total < 1024

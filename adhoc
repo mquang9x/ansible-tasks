@@ -1,0 +1,6 @@
+#!/bin/bash
+
+ansible all -b -m  user -a "name=automation" -b -u root -k -K
+ansible all -b -m  file -a "path=/home/automation/.ssh state=directory owner=automation" -b -u root -k -K
+ansible all -b -m  copy -a "src=/home/automation/.ssh/id_rsa.pub dest=/home/automation/.ssh/authorized_keys directory_mode=yes" -b -u root -k -K
+ansible all -b -m command -a "echo 'automation ALL=(ALL) NOPASSWD: ALL' > path=/etc/sudoers.d/automation" -b -u root -k -K

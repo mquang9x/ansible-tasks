@@ -1,0 +1,24 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+      - name: Change default banner
+         lineinfile:
+            path: /etc/ssh/sshd_config
+            regexp: '^Banner'
+            line: 'Banner/etc/motd'
+      - name: X11 Forwarding
+         lineinfile:
+            path: /etc/ssh/sshd_config
+            regexp: '^X11Forwarding'
+            line: 'X11Forwarding no'
+      - name: MaxAuthTries
+         lineinfile:
+            path: /etc/ssh/sshd_config
+            regexp: '^#MaxAuthTries'
+            line: 'MaxAuthTries 3'
+      - name: restart sshd service
+         service:
+            name: sshd
+            state: started
+            enabled: yes

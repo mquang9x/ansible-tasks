@@ -1,0 +1,15 @@
+---
+-  hosts: all
+   become: yes
+   tasks:
+   - name: Apache is present
+     lineinfile:
+       line: "Welcome to Apache server"
+       path: /etc/motd
+       create: yes
+
+   - name: SQL is present
+     lineinfile:
+       line: "Welcome to MySQL server"
+       path: /etc/motd
+       create: yes
