@@ -1,0 +1,31 @@
+---
+- name: Install apache
+  yum:
+      name: "{{ item }}"
+      state: latest
+  loop:
+    - httpd
+    - mod_ssl
+
+- name: Allow incoming http/https traffic
+  firewalld:
+    service: "{{ item }}"
+    immediate: true
+    permanent: true
+    state: enabled
+  loop:
+    - http
+    - https
+
+- name: Start and enable the apache service
+  service:
+    name: httpd
+    state: started
+    enabled: true
+
+- name: Update html file
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+  notify: restart apache
+
